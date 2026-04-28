@@ -1,12 +1,32 @@
+const range = (start, stop, step = 1) =>
+    Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
+
 class Board {
     constructor() {
         this.size = 9;
-        this.numbers = [];
+        this.grid = [];
 
         for (let i = 0; i < this.size; i++) {
-            this.numbers[i] = new Array();
+            this.grid[i] = new Array();
             for (let j = 0; j < this.size; j++) {
-                this.numbers[i][j] = 0;
+                this.grid[i][j] = 0;
+            }
+        }
+    }
+
+    generate() {
+        //cells
+
+        for (let x = 0; x < 9; x++) {
+            for (let y = 0; y < 9; y++) {
+                let options = range(1, 9);
+
+                let row = [];
+                for (let i = 0; i < 9; i++) {
+                    row[i] = this.grid[i][y];
+                    if (row[i].includes())
+                }
+                console.log(row);
             }
         }
     }
@@ -27,7 +47,7 @@ class Board {
 
                 let textPosX = posx + width / this.size / 2;
                 let textPosY = posy + height / this.size / 2.3;
-                text(this.numbers[x][y], textPosX, textPosY);
+                text(this.grid[x][y], textPosX, textPosY);
             }
         }
 

@@ -11,6 +11,7 @@ function setup() {
 
 function draw() {
     background(255);
+    board.generate();
     board.render();
     noLoop();
 }
