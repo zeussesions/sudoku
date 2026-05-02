@@ -1,6 +1,7 @@
-const range = (start, stop, step = 1) =>
-    Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
-
+{
+    const range = (start, stop, step = 1) =>
+        Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
+}
 class Board {
     constructor() {
         this.size = 9;
@@ -15,21 +16,56 @@ class Board {
     }
 
     generate() {
-        //cells
+        for (let x = 0; x < this.size; x++) {
+            for (let y = 0; y < this.size; y++) {
+                let options = this.checkCell(x, y);
 
-        for (let x = 0; x < 9; x++) {
-            for (let y = 0; y < 9; y++) {
-                let options = range(1, 9);
-
-                let row = [];
-                for (let i = 0; i < 9; i++) {
-                    row[i] = this.grid[i][y];
-                    if (row[i].includes())
+                if (options.length == 0) {
+                    this.backtrack(x, y);
+                } else {
+                    this.setCell(x, y, options);
                 }
-                console.log(row);
             }
         }
     }
+
+    checkCell(cellX, cellY) {
+        let options = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        // check row //
+        for (let i = 0; i < this.size; i++) {
+            if (this.grid[i][cellY] != 0) {
+                let index = options.indexOf(this.grid[i][cellY]);
+                options.splice(index, 1);
+            }
+        }
+
+        // check column //
+        for (let i = 0; i < this.size; i++) {
+            if (this.grid[cellX][i] != 0) {
+                let index = options.indexOf(this.grid[cellX][i]);
+                options.splice(index, 1);
+            }
+        }
+
+        // check 3x3 //
+
+        return options;
+    }
+
+    setCell(x, y, numOptions) {
+        this.grid[x][y] = numOptions[floor(random(0, numOptions.length - 1))];
+    }
+
+    backtrack(backtrackX, backtrackY) {
+        console.log("backtracking");
+        if (backtrackX - 1 == 0) {
+            console.log("on edge", backtrackX);
+        }
+        this.grid[backtrackX - 1][backtrackY] = 0;
+    }
+
+    //-------------RENDER-------------//
 
     render() {
         textAlign(CENTER, CENTER);
@@ -47,7 +83,9 @@ class Board {
 
                 let textPosX = posx + width / this.size / 2;
                 let textPosY = posy + height / this.size / 2.3;
-                text(this.grid[x][y], textPosX, textPosY);
+                if (this.grid[x][y] != 0) {
+                    text(this.grid[x][y], textPosX, textPosY);
+                }
             }
         }
 
